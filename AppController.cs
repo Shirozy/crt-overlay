@@ -136,10 +136,17 @@ public sealed class AppController : IDisposable
 
     private void ShowSettings()
     {
+        var originalSettings = _settings.Clone();
         var window = new SettingsWindow(_settings)
         {
             Owner = _overlayWindows.Count > 0 ? _overlayWindows[0] : null,
             Topmost = true
+        };
+
+        window.PreviewSettingsChanged += previewSettings =>
+        {
+            _settings = previewSettings;
+            ApplySettingsToAllWindows();
         };
 
         if (window.ShowDialog() == true && window.Result is not null)
@@ -147,6 +154,11 @@ public sealed class AppController : IDisposable
             _settings = window.Result;
             ApplySettingsToAllWindows();
             SettingsPersistenceService.Save(_settings);
+        }
+        else
+        {
+            _settings = originalSettings;
+            ApplySettingsToAllWindows();
         }
     }
 

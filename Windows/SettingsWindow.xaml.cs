@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -14,9 +15,12 @@ public partial class SettingsWindow : Window, INotifyPropertyChanged
     public SettingsWindow(OverlaySettings settings)
     {
         InitializeComponent();
+        OriginalSettings = settings.Clone();
         WorkingCopy = settings.Clone();
         DataContext = this;
     }
+
+    public OverlaySettings OriginalSettings { get; }
 
     public OverlaySettings WorkingCopy
     {
@@ -32,6 +36,7 @@ public partial class SettingsWindow : Window, INotifyPropertyChanged
             AttachWorkingCopyEvents(_workingCopy);
             OnPropertyChanged();
             OnPropertyChanged(nameof(TintPreviewColor));
+            RaisePreviewSettingsChanged();
         }
     }
 
@@ -40,6 +45,7 @@ public partial class SettingsWindow : Window, INotifyPropertyChanged
     public OverlaySettings? Result { get; private set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+    public event Action<OverlaySettings>? PreviewSettingsChanged;
 
     private void Apply_Click(object sender, RoutedEventArgs e)
     {
@@ -50,6 +56,7 @@ public partial class SettingsWindow : Window, INotifyPropertyChanged
 
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
+        Result = null;
         DialogResult = false;
         Close();
     }
@@ -71,6 +78,7 @@ public partial class SettingsWindow : Window, INotifyPropertyChanged
         WorkingCopy.TintGreen = green;
         WorkingCopy.TintBlue = blue;
         OnPropertyChanged(nameof(TintPreviewColor));
+        RaisePreviewSettingsChanged();
     }
 
     private void AttachWorkingCopyEvents(OverlaySettings workingCopy)
@@ -95,6 +103,13 @@ public partial class SettingsWindow : Window, INotifyPropertyChanged
         {
             OnPropertyChanged(nameof(TintPreviewColor));
         }
+
+        RaisePreviewSettingsChanged();
+    }
+
+    private void RaisePreviewSettingsChanged()
+    {
+        PreviewSettingsChanged?.Invoke(WorkingCopy.Clone());
     }
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
