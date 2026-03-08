@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Workspace\\TempDownloads\\crt-overlay-app-v5\\CrtOverlayApp\\CrtOverlayApp.csproj": {}
+    "D:\\Workspace\\TempDownloads\\crt-overlay-app-v6\\CrtOverlayApp\\CrtOverlayApp.csproj": {}
   },
   "projects": {
-    "D:\\Workspace\\TempDownloads\\crt-overlay-app-v5\\CrtOverlayApp\\CrtOverlayApp.csproj": {
+    "D:\\Workspace\\TempDownloads\\crt-overlay-app-v6\\CrtOverlayApp\\CrtOverlayApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Workspace\\TempDownloads\\crt-overlay-app-v5\\CrtOverlayApp\\CrtOverlayApp.csproj",
+        "projectUniqueName": "D:\\Workspace\\TempDownloads\\crt-overlay-app-v6\\CrtOverlayApp\\CrtOverlayApp.csproj",
         "projectName": "CrtOverlayApp",
-        "projectPath": "D:\\Workspace\\TempDownloads\\crt-overlay-app-v5\\CrtOverlayApp\\CrtOverlayApp.csproj",
+        "projectPath": "D:\\Workspace\\TempDownloads\\crt-overlay-app-v6\\CrtOverlayApp\\CrtOverlayApp.csproj",
         "packagesPath": "C:\\Users\\vixiie\\.nuget\\packages\\",
-        "outputPath": "D:\\Workspace\\TempDownloads\\crt-overlay-app-v5\\CrtOverlayApp\\obj\\",
+        "outputPath": "D:\\Workspace\\TempDownloads\\crt-overlay-app-v6\\CrtOverlayApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\vixiie\\AppData\\Roaming\\NuGet\\NuGet.Config",

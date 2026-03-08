@@ -24,19 +24,27 @@ public sealed class AppController : IDisposable
     private OverlaySettings _settings = SettingsPersistenceService.Load();
     private bool _isEnabled = true;
 
-    private const int HotkeyId = 0x5142;
+    private const int HotkeyToggleId = 0x5142;
+    private const int HotkeyPreset1Id = 0x5143;
+    private const int HotkeyPreset2Id = 0x5144;
+    private const int HotkeyIncreaseId = 0x5145;
+    private const int HotkeyDecreaseId = 0x5146;
     private const int WmHotkey = 0x0312;
     private const uint ModControl = 0x0002;
     private const uint ModAlt = 0x0001;
     private const uint ModNoRepeat = 0x4000;
     private const uint VkC = 0x43;
+    private const uint Vk1 = 0x31;
+    private const uint Vk2 = 0x32;
+    private const uint VkUp = 0x26;
+    private const uint VkDown = 0x28;
 
     public AppController(Application application)
     {
         _application = application;
         _frameTimer = new DispatcherTimer(DispatcherPriority.Render)
         {
-            Interval = TimeSpan.FromMilliseconds(33)
+            Interval = TimeSpan.FromMilliseconds(GetFrameIntervalMs(_settings.TargetFps))
         };
         _frameTimer.Tick += (_, _) => RenderFrame();
 
@@ -117,6 +125,15 @@ public sealed class AppController : IDisposable
         var menu = new ContextMenuStrip();
         menu.Items.Add("Toggle overlay", null, (_, _) => ToggleOverlay());
         menu.Items.Add("Settings", null, (_, _) => ShowSettings());
+
+        var presets = new ToolStripMenuItem("Presets");
+        presets.DropDownItems.Add("Green terminal", null, (_, _) => ApplyPreset(OverlayPresets.GreenTerminal()));
+        presets.DropDownItems.Add("Blue monitor", null, (_, _) => ApplyPreset(OverlayPresets.BlueMonitor()));
+        presets.DropDownItems.Add("Amber terminal", null, (_, _) => ApplyPreset(OverlayPresets.AmberTerminal()));
+        presets.DropDownItems.Add("Sony PVM", null, (_, _) => ApplyPreset(OverlayPresets.SonyPvm()));
+        presets.DropDownItems.Add("VHS", null, (_, _) => ApplyPreset(OverlayPresets.Vhs()));
+        menu.Items.Add(presets);
+
         menu.Items.Add("Refresh monitors", null, (_, _) => RefreshMonitors());
         menu.Items.Add("Exit", null, (_, _) => _application.Shutdown());
         return menu;
@@ -176,10 +193,35 @@ public sealed class AppController : IDisposable
 
     private void ApplySettingsToAllWindows()
     {
+        _frameTimer.Interval = TimeSpan.FromMilliseconds(GetFrameIntervalMs(_settings.TargetFps));
+
         foreach (var window in _overlayWindows)
         {
             window.ApplySettings(_settings);
         }
+
+        UpdateTrayState();
+    }
+
+    private void ApplyPreset(OverlaySettings preset)
+    {
+        preset.ExcludeFromCapture = _settings.ExcludeFromCapture;
+        _settings = preset;
+        ApplySettingsToAllWindows();
+        SettingsPersistenceService.Save(_settings);
+    }
+
+    private void AdjustMasterOpacity(double delta)
+    {
+        _settings.MasterOpacity = Math.Clamp(_settings.MasterOpacity + delta, 0.05, 1.0);
+        ApplySettingsToAllWindows();
+        SettingsPersistenceService.Save(_settings);
+    }
+
+    private static double GetFrameIntervalMs(int targetFps)
+    {
+        var fps = Math.Clamp(targetFps, 15, 60);
+        return 1000.0 / fps;
     }
 
     private void UpdateTrayState()
@@ -199,7 +241,11 @@ public sealed class AppController : IDisposable
 
         _hotkeySource = new HwndSource(parameters);
         _hotkeySource.AddHook(WndProc);
-        RegisterHotKey(_hotkeySource.Handle, HotkeyId, ModControl | ModAlt | ModNoRepeat, VkC);
+        RegisterHotKey(_hotkeySource.Handle, HotkeyToggleId, ModControl | ModAlt | ModNoRepeat, VkC);
+        RegisterHotKey(_hotkeySource.Handle, HotkeyPreset1Id, ModControl | ModAlt | ModNoRepeat, Vk1);
+        RegisterHotKey(_hotkeySource.Handle, HotkeyPreset2Id, ModControl | ModAlt | ModNoRepeat, Vk2);
+        RegisterHotKey(_hotkeySource.Handle, HotkeyIncreaseId, ModControl | ModAlt | ModNoRepeat, VkUp);
+        RegisterHotKey(_hotkeySource.Handle, HotkeyDecreaseId, ModControl | ModAlt | ModNoRepeat, VkDown);
     }
 
     private void DestroyHotkeyWindow()
@@ -209,7 +255,11 @@ public sealed class AppController : IDisposable
             return;
         }
 
-        UnregisterHotKey(_hotkeySource.Handle, HotkeyId);
+        UnregisterHotKey(_hotkeySource.Handle, HotkeyToggleId);
+        UnregisterHotKey(_hotkeySource.Handle, HotkeyPreset1Id);
+        UnregisterHotKey(_hotkeySource.Handle, HotkeyPreset2Id);
+        UnregisterHotKey(_hotkeySource.Handle, HotkeyIncreaseId);
+        UnregisterHotKey(_hotkeySource.Handle, HotkeyDecreaseId);
         _hotkeySource.RemoveHook(WndProc);
         _hotkeySource.Dispose();
         _hotkeySource = null;
@@ -217,7 +267,7 @@ public sealed class AppController : IDisposable
 
     private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if (msg == WmHotkey && wParam.ToInt32() == HotkeyId)
+        if (msg == WmHotkey && wParam.ToInt32() == HotkeyToggleId)
         {
             ToggleOverlay();
             handled = true;

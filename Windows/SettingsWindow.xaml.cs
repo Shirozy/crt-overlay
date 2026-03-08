@@ -2,9 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Media;
-using MediaColor = System.Windows.Media.Color;
 using CrtOverlayApp.Models;
+using MediaColor = System.Windows.Media.Color;
 
 namespace CrtOverlayApp.Windows;
 
@@ -71,6 +70,12 @@ public partial class SettingsWindow : Window, INotifyPropertyChanged
     private void PresetRed_Click(object sender, RoutedEventArgs e) => SetTint(255, 110, 110);
     private void PresetAmber_Click(object sender, RoutedEventArgs e) => SetTint(255, 191, 90);
     private void PresetWhite_Click(object sender, RoutedEventArgs e) => SetTint(235, 245, 255);
+
+    private void PresetGreenTerminal_Click(object sender, RoutedEventArgs e) => WorkingCopy = OverlayPresets.GreenTerminal();
+    private void PresetBlueMonitor_Click(object sender, RoutedEventArgs e) => WorkingCopy = OverlayPresets.BlueMonitor();
+    private void PresetAmberTerminal_Click(object sender, RoutedEventArgs e) => WorkingCopy = OverlayPresets.AmberTerminal();
+    private void PresetSonyPvm_Click(object sender, RoutedEventArgs e) => WorkingCopy = OverlayPresets.SonyPvm();
+    private void PresetVhs_Click(object sender, RoutedEventArgs e) => WorkingCopy = OverlayPresets.Vhs();
 
     private void SetTint(byte red, byte green, byte blue)
     {
