@@ -1,0 +1,78 @@
+<Window x:Class="CrtOverlayApp.Windows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CRT Overlay Settings"
+        Width="460"
+        Height="700"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="18">
+            <TextBlock Text="CRT Overlay Settings" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12" />
+            <TextBlock Text="Settings are saved automatically after Apply." Foreground="#666" Margin="0,0,0,16" />
+
+            <TextBlock Text="Master opacity" FontWeight="SemiBold" />
+            <Slider Minimum="0.05" Maximum="1" SmallChange="0.01" Value="{Binding WorkingCopy.MasterOpacity}" />
+
+            <TextBlock Text="Scanline spacing" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="2" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WorkingCopy.ScanlineSpacing}" />
+
+            <TextBlock Text="Scanline opacity" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="0.4" SmallChange="0.01" Value="{Binding WorkingCopy.ScanlineOpacity}" />
+
+            <TextBlock Text="Noise density" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="1" SmallChange="0.01" Value="{Binding WorkingCopy.NoiseDensity}" />
+
+            <TextBlock Text="Noise opacity" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="0.25" SmallChange="0.01" Value="{Binding WorkingCopy.NoiseOpacity}" />
+
+            <TextBlock Text="Glow strength" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="1" SmallChange="0.01" Value="{Binding WorkingCopy.GlowStrength}" />
+
+            <TextBlock Text="Vignette strength" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="1" SmallChange="0.01" Value="{Binding WorkingCopy.VignetteStrength}" />
+            <TextBlock Text="Curvature was removed in this build. True screen warping needs desktop capture + shader rendering." 
+                       Foreground="#666" TextWrapping="Wrap" Margin="0,6,0,0" />
+
+            <TextBlock Text="Tint opacity" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="0.45" SmallChange="0.01" Value="{Binding WorkingCopy.TintOpacity}" />
+
+            <TextBlock Text="Tint color" FontWeight="SemiBold" Margin="0,12,0,4" />
+            <WrapPanel Margin="0,0,0,8">
+                <Button Width="70" Margin="0,0,8,8" Content="Green" Click="PresetGreen_Click" />
+                <Button Width="70" Margin="0,0,8,8" Content="Blue" Click="PresetBlue_Click" />
+                <Button Width="70" Margin="0,0,8,8" Content="Red" Click="PresetRed_Click" />
+                <Button Width="80" Margin="0,0,8,8" Content="Amber" Click="PresetAmber_Click" />
+                <Button Width="75" Margin="0,0,8,8" Content="White" Click="PresetWhite_Click" />
+            </WrapPanel>
+
+            <TextBlock Text="Tint red" FontWeight="SemiBold" />
+            <Slider Minimum="0" Maximum="255" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WorkingCopy.TintRed}" />
+
+            <TextBlock Text="Tint green" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="255" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WorkingCopy.TintGreen}" />
+
+            <TextBlock Text="Tint blue" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="255" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WorkingCopy.TintBlue}" />
+
+            <Border Margin="0,10,0,0" Height="34" CornerRadius="6" BorderBrush="#666" BorderThickness="1">
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding TintPreviewColor}" />
+                </Border.Background>
+            </Border>
+
+            <TextBlock Text="Flicker strength" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <Slider Minimum="0" Maximum="0.12" SmallChange="0.005" Value="{Binding WorkingCopy.FlickerStrength}" />
+
+            <CheckBox Margin="0,16,0,0"
+                      Content="Try to exclude overlay from screen capture"
+                      IsChecked="{Binding WorkingCopy.ExcludeFromCapture}" />
+
+            <WrapPanel Margin="0,20,0,0" HorizontalAlignment="Right">
+                <Button Width="90" Margin="0,0,8,0" Content="Reset" Click="Reset_Click" />
+                <Button Width="90" Margin="0,0,8,0" Content="Cancel" Click="Cancel_Click" />
+                <Button Width="90" Content="Apply" Click="Apply_Click" IsDefault="True" />
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
