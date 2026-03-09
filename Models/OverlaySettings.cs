@@ -30,6 +30,13 @@ public sealed class OverlaySettings : INotifyPropertyChanged
     private double _screenJitter = 0.15;
     private double _reflectionStrength = 0.08;
     private int _targetFps = 30;
+    private string _toggleHotkey = "Ctrl+Alt+C";
+    private string _preset1Hotkey = "Ctrl+Alt+1";
+    private string _preset2Hotkey = "Ctrl+Alt+2";
+    private string _increaseHotkey = "Ctrl+Alt+Up";
+    private string _decreaseHotkey = "Ctrl+Alt+Down";
+    private string _preset1Name = "Sony PVM";
+    private string _preset2Name = "VHS";
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -57,6 +64,13 @@ public sealed class OverlaySettings : INotifyPropertyChanged
     public double ScreenJitter { get => _screenJitter; set => SetField(ref _screenJitter, value); }
     public double ReflectionStrength { get => _reflectionStrength; set => SetField(ref _reflectionStrength, value); }
     public int TargetFps { get => _targetFps; set => SetField(ref _targetFps, value); }
+    public string ToggleHotkey { get => _toggleHotkey; set => SetField(ref _toggleHotkey, value); }
+    public string Preset1Hotkey { get => _preset1Hotkey; set => SetField(ref _preset1Hotkey, value); }
+    public string Preset2Hotkey { get => _preset2Hotkey; set => SetField(ref _preset2Hotkey, value); }
+    public string IncreaseHotkey { get => _increaseHotkey; set => SetField(ref _increaseHotkey, value); }
+    public string DecreaseHotkey { get => _decreaseHotkey; set => SetField(ref _decreaseHotkey, value); }
+    public string Preset1Name { get => _preset1Name; set => SetField(ref _preset1Name, value); }
+    public string Preset2Name { get => _preset2Name; set => SetField(ref _preset2Name, value); }
 
     public OverlaySettings Clone() => new()
     {
@@ -83,7 +97,14 @@ public sealed class OverlaySettings : INotifyPropertyChanged
         Brightness = Brightness,
         ScreenJitter = ScreenJitter,
         ReflectionStrength = ReflectionStrength,
-        TargetFps = TargetFps
+        TargetFps = TargetFps,
+        ToggleHotkey = ToggleHotkey,
+        Preset1Hotkey = Preset1Hotkey,
+        Preset2Hotkey = Preset2Hotkey,
+        IncreaseHotkey = IncreaseHotkey,
+        DecreaseHotkey = DecreaseHotkey,
+        Preset1Name = Preset1Name,
+        Preset2Name = Preset2Name
     };
 
     private void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)

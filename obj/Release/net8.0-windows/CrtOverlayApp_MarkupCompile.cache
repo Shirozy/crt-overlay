@@ -4,15 +4,15 @@
 winexe
 C#
 .cs
-D:\Workspace\TempDownloads\crt-overlay-app-v6\CrtOverlayApp\obj\Release\net8.0-windows\
+D:\Workspace\TempDownloads\crt-overlay-app-menu-reset\CrtOverlayApp\obj\Release\net8.0-windows\
 CrtOverlayApp
 none
 false
 TRACE;RELEASE;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-D:\Workspace\TempDownloads\crt-overlay-app-v6\CrtOverlayApp\App.xaml
+D:\Workspace\TempDownloads\crt-overlay-app-menu-reset\CrtOverlayApp\App.xaml
 21200313228
 
-10-2130246853
+11-346260965
 207-2075959150
 Windows\OverlayWindow.xaml;Windows\SettingsWindow.xaml;
 
